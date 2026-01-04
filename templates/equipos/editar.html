@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar Equipo</h2>
+<form method="POST">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Nombre del Equipo</label>
+                <input type="text" name="nombre" class="form-control" value="{{ equipo.nombre }}" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Código del Equipo</label>
+                <input type="text" name="codigo" class="form-control" value="{{ equipo.codigo }}" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Condición/Descripción</label>
+        <textarea name="condicion" class="form-control" rows="3">{{ equipo.condicion }}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Multa por Día de Retraso ($)</label>
+        <input type="number" name="multa_por_dia" class="form-control" step="0.01" min="0" value="{{ equipo.multa_por_dia }}" required>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Guardar Cambios</button>
+        <a href="{{ url_for('equipos') }}" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

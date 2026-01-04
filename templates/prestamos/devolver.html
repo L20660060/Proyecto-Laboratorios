@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Confirmar Devolución</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Equipo:</strong> {{ prestamo.equipo.nombre }} ({{ prestamo.equipo.codigo }})</p>
+        <p><strong>Alumno:</strong> {{ prestamo.alumno.nombre }} ({{ prestamo.alumno.codigo }})</p>
+        <p><strong>Fecha de Préstamo:</strong> {{ prestamo.fecha_prestamo.strftime('%d/%m/%Y %H:%M') }}</p>
+        {% if prestamo.fecha_prevista_devolucion %}
+        <p><strong>Fecha Límite:</strong> {{ prestamo.fecha_prevista_devolucion.strftime('%d/%m/%Y %H:%M') }}</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal de multa si está vencido -->
+{% if vencido %}
+<div class="modal fade" id="multaModal" tabindex="-1" aria-labelledby="multaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-danger">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="multaModalLabel">¡Préstamo Vencido!</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="lead">El préstamo ha excedido la fecha límite de devolución.</p>
+                <ul class="list-unstyled">
+                    <li><strong>Días de retraso:</strong> {{ dias_retraso }}</li>
+                    <li><strong>Multa total:</strong> <span class="text-danger fw-bold fs-5">${{ multa }}</span> </li>
+                </ul>
+                <p>Al confirmar, se registrará la devolución y la multa correspondiente.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger">Confirmar Devolución con Multa</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Confirmación normal si no está vencido -->
+{% if not vencido %}
+<div class="mt-4 p-4 border rounded bg-light">
+    <p class="lead">¿Estás seguro de registrar la devolución de este equipo?</p>
+    <div class="d-flex gap-3">
+        <form method="POST" class="d-inline">
+            <button type="submit" class="btn btn-success btn-lg">Confirmar Devolución</button>
+        </form>
+        <a href="{{ url_for('prestamos') }}" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</div>
+{% endif %}
+
+<!-- Script corregido para abrir el modal automáticamente si está vencido -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        {% if vencido %}
+        const multaModalElement = document.getElementById('multaModal');
+        if (multaModalElement) {
+            const multaModal = new bootstrap.Modal(multaModalElement);
+            multaModal.show();
+        }
+        {% endif %}
+    });
+</script>
+{% endblock %}

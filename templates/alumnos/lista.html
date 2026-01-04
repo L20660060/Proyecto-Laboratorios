@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Lista de Alumnos</h2>
+
+{% if current_user.role == 'admin' %}
+<a href="{{ url_for('nuevo_alumno') }}" class="btn btn-primary mb-3">+ Agregar Alumno</a>
+{% endif %}
+
+{% if alumnos|length == 0 %}
+<div class="alert alert-info">No hay alumnos registrados.</div>
+{% else %}
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Usuario</th>
+            <th>Nombre</th>
+            <th>Código/Matrícula</th>
+            {% if current_user.role == 'admin' %}
+            <th>Acciones</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in alumnos %}
+        <tr>
+            <td>{{ a.username }}</td>
+            <td>{{ a.nombre }}</td>
+            <td>{{ a.codigo }}</td>
+            {% if current_user.role == 'admin' %}
+            <td>
+                <a href="{{ url_for('editar_alumno', alumno_id=a.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{{ url_for('eliminar_alumno', alumno_id=a.id) }}" 
+                   class="btn btn-danger btn-sm" 
+                   onclick="return confirm('¿Estás seguro de eliminar este alumno y todos sus préstamos?')">
+                   Eliminar
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% if current_user.role == 'consulta' %}
+<div class="alert alert-info mt-4">
+    <strong>Modo Consulta:</strong> Solo puedes ver la lista de alumnos. No puedes agregar, editar ni eliminar.
+</div>
+{% endif %}
+{% endblock %}

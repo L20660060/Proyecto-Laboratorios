@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>
+    {% if current_user.role == 'admin' %}Préstamos Activos (Todos){% else %}Mis Préstamos Activos{% endif %}
+</h2>
+
+{% if current_user.role == 'admin' %}
+<a href="{{ url_for('nuevo_prestamo') }}" class="btn btn-primary mb-3">+ Solicitar Préstamo</a>
+{% endif %}
+
+{% if prestamos|length == 0 %}
+<div class="alert alert-info">No hay préstamos activos.</div>
+{% else %}
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Fecha Préstamo</th>
+            <th>Alumno</th>
+            <th>Equipo</th>
+            <th>Fecha Límite</th>
+            {% if current_user.role != 'consulta' %}
+            <th>Acción</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in prestamos %}
+        <tr>
+            <td>{{ p.fecha_prestamo.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>{{ p.alumno.nombre }} ({{ p.alumno.codigo }})</td>
+            <td>{{ p.equipo.nombre }} ({{ p.equipo.codigo }})</td>
+            <td>
+                {% if p.fecha_prevista_devolucion %}
+                    {{ p.fecha_prevista_devolucion.strftime('%d/%m/%Y %H:%M') }}
+                    {% if p.fecha_prevista_devolucion < datetime.utcnow() %}
+                        <span class="badge bg-danger">Vencido</span>
+                    {% endif %}
+                {% else %}
+                    <span class="text-muted">No establecida</span>
+                {% endif %}
+            </td>
+            {% if current_user.role != 'consulta' %}
+            <td>
+                {% if current_user.role == 'admin' or (current_user.role == 'alumno' and p.alumno_id == current_user.id) %}
+                <a href="{{ url_for('devolver', prestamo_id=p.id) }}" class="btn btn-success btn-sm">Devolver</a>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

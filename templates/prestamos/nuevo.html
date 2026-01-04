@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Solicitar Préstamo</h2>
+
+<form method="POST">
+    <div class="mb-3">
+        <label class="form-label">Equipo Disponible <span class="text-danger">*</span></label>
+        <select name="equipo_id" class="form-select" required>
+            <option value="">-- Seleccione un equipo --</option>
+            {% for eq in equipos %}
+            <option value="{{ eq.id }}">
+                {{ eq.nombre }} - {{ eq.codigo }} (Multa por día: ${{ eq.multa_por_dia|round(2) }})
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fecha de Préstamo</label>
+        <input type="text" class="form-control" value="{{ now.strftime('%d/%m/%Y %H:%M') }}" disabled>
+        <small class="text-muted">Se registra automáticamente al solicitar.</small>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Fecha Límite de Devolución <span class="text-danger">*</span></label>
+        <input type="datetime-local" name="fecha_prevista_devolucion" class="form-control" required>
+    </div>
+
+    <!-- Campo informativo de multa (no editable) -->
+    <div class="alert alert-warning" role="alert">
+        <strong>¡Importante!</strong> Si no devuelves el equipo antes de la fecha límite seleccionada, 
+        se aplicará una <strong>multa automática de $50.00 pesos por cada día de retraso</strong>.
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success btn-lg">Solicitar Préstamo</button>
+        <a href="{{ url_for('prestamos') }}" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Crear Usuario de Consulta (Solo Lectura)</h2>
+
+<div class="card border-primary">
+    <div class="card-body">
+        <p class="card-text text-muted">
+            Este usuario podrá ver la lista de alumnos y el historial completo, pero <strong>no podrá modificar, agregar ni eliminar nada</strong>.
+        </p>
+    </div>
+</div>
+
+<form method="POST" class="mt-4">
+    <div class="mb-3">
+        <label class="form-label">Usuario (login) <span class="text-danger">*</span></label>
+        <input type="text" name="username" class="form-control" placeholder="Ej: consulta1" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Nombre completo <span class="text-danger">*</span></label>
+        <input type="text" name="nombre" class="form-control" placeholder="Ej: Usuario Consulta Laboratorio" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Contraseña <span class="text-danger">*</span></label>
+        <input type="password" name="password" class="form-control" required>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Crear Usuario Consulta</button>
+        <a href="{{ url_for('alumnos') }}" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

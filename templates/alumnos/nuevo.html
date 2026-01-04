@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Nuevo Alumno</h2>
+<form method="POST">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label>Usuario (login)</label>
+                <input type="text" name="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Nombre completo</label>
+                <input type="text" name="nombre" class="form-control" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label>Código/Matrícula</label>
+                <input type="text" name="codigo" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success">Crear Alumno</button>
+    <a href="{{ url_for('alumnos') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

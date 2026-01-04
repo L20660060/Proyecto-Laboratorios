@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar Alumno</h2>
+<form method="POST">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Usuario (login)</label>
+                <input type="text" name="username" class="form-control" value="{{ alumno.username }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nombre completo</label>
+                <input type="text" name="nombre" class="form-control" value="{{ alumno.nombre }}" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Código/Matrícula</label>
+                <input type="text" name="codigo" class="form-control" value="{{ alumno.codigo }}" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Nueva Contraseña (dejar vacío para no cambiar)</label>
+                <input type="password" name="password" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Guardar Cambios</button>
+        <a href="{{ url_for('alumnos') }}" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

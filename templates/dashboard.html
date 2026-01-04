@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-5 fw-bold text-primary">Bienvenido al Sistema</h1>
+    <p class="lead text-muted">Gestión eficiente de préstamos de equipos de laboratorio</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 h-100">
+            <div class="card-body text-center p-5">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                <h4 class="mt-4 text-success">Equipos Disponibles</h4>
+                <h2 class="display-4 fw-bold text-success">{{ disponibles or 0 }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 h-100">
+            <div class="card-body text-center p-5">
+                <i class="bi bi-truck text-warning" style="font-size: 4rem;"></i>
+                <h4 class="mt-4 text-warning">Equipos Prestados</h4>
+                <h2 class="display-4 fw-bold text-warning">{{ prestados or 0 }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card border-0 h-100">
+            <div class="card-body text-center p-5">
+                <i class="bi bi-clock-history text-primary" style="font-size: 4rem;"></i>
+                <h4 class="mt-4 text-primary">Préstamos Activos</h4>
+                <h2 class="display-4 fw-bold text-primary">{{ activos }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-5">
+    <p class="lead">Hola, <strong>{{ current_user.nombre }}</strong></p>
+    <p class="text-muted">Usa el menú lateral para navegar por el sistema.</p>
+</div>
+{% endblock %}

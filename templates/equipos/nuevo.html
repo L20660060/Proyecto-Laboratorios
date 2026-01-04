@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Nuevo Equipo</h2>
+<form method="POST">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Nombre del Equipo <span class="text-danger">*</span></label>
+                <input type="text" name="nombre" class="form-control" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Código del Equipo <span class="text-danger">*</span></label>
+                <input type="text" name="codigo" class="form-control" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Condición/Descripción</label>
+        <textarea name="condicion" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Multa por Día de Retraso ($) <span class="text-danger">*</span></label>
+        <input type="number" name="multa_por_dia" class="form-control" step="0.01" min="0" value="50.00" required>
+        <small class="text-muted">Este valor se usará para calcular multas automáticas si el equipo se devuelve con retraso.</small>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success btn-lg">Guardar Equipo</button>
+        <a href="{{ url_for('equipos') }}" class="btn btn-secondary btn-lg">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
