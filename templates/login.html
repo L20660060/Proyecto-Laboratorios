@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Iniciar Sesión</title>
+    <title>Iniciar Sesión - Préstamo Equipos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            background: url('https://media.istockphoto.com/id/1159218499/photo/interior-of-a-modern-computer-lab.jpg?s=612x612&w=0&k=20&c=dbR84vgLb9Ll4OfDKAQ24KIE-dHpqeLSsOtsqrjGJDY=') no-repeat center center fixed;
+            background-size: cover;
             font-family: 'Poppins', sans-serif;
         }
         body {
@@ -21,13 +22,33 @@
             align-items: center;
             justify-content: center;
         }
-        .login-card {
+        /* Overlay suave para que la imagen se vea pero el texto sea legible */
+        .login-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 420px;
-            background: white;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Oscuridad media */
+            z-index: 1;
+        }
+        .login-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95); /* Casi blanco para legibilidad */
             border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .login-header {
             background: linear-gradient(to right, #0ea5e9, #38bdf8);
@@ -38,9 +59,39 @@
         .login-header i {
             font-size: 5.5rem;
             margin-bottom: 20px;
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .login-header h2 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        .login-header p {
+            opacity: 0.9;
+            margin: 10px 0 0;
+            font-size: 1.2rem;
         }
         .card-body {
             padding: 60px 50px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #0c4a6e;
+        }
+        .form-control {
+            border-radius: 14px;
+            padding: 14px 20px;
+            border: 1px solid #cbd5e1;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 0.25rem rgba(14, 165, 233, 0.25);
         }
         .btn-login {
             background: linear-gradient(to right, #0ea5e9, #38bdf8);
@@ -49,40 +100,54 @@
             padding: 16px;
             font-size: 1.2rem;
             font-weight: 600;
+            transition: all 0.3s;
         }
         .btn-login:hover {
             background: linear-gradient(to right, #0284c7, #0ea5e9);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(14, 165, 233, 0.4);
         }
-        @media (max-height: 700px) {
+        .text-muted {
+            font-size: 0.9rem;
+        }
+        @media (max-height: 700px) or (max-width: 500px) {
             .login-header { padding: 40px 20px; }
+            .login-header i { font-size: 4rem; }
             .card-body { padding: 40px 30px; }
         }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <div class="login-header">
-            <i class="bi bi-cpu-fill"></i>
-            <h2>Sistema de Préstamo</h2>
-            <p>Laboratorio de Computación</p>
-        </div>
-        <div class="card-body">
-            <form method="POST">
-                <div class="mb-4">
-                    <label class="form-label">Usuario</label>
-                    <input type="text" name="username" class="form-control form-control-lg" placeholder="Ingresa tu usuario" required autofocus>
+    <!-- Overlay para oscurecer ligeramente la imagen -->
+    <div class="login-overlay"></div>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="bi bi-cpu-fill"></i>
+                <h2>Sistema de Préstamo</h2>
+                <p>Laboratorio de Computación</p>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-4">
+                        <label class="form-label">Usuario</label>
+                        <input type="text" name="username" class="form-control form-control-lg" placeholder="Ingresa tu usuario" required autofocus>
+                    </div>
+                    <div class="mb-5">
+                        <label class="form-label">Contraseña</label>
+                        <input type="password" name="password" class="form-control form-control-lg" placeholder="Ingresa tu contraseña" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-login w-100">Iniciar Sesión</button>
+                </form>
+                <div class="text-center mt-4">
+                    <small class="text-muted">Admin: admin / admin123</small>
                 </div>
-                <div class="mb-5">
-                    <label class="form-label">Contraseña</label>
-                    <input type="password" name="password" class="form-control form-control-lg" placeholder="Ingresa tu contraseña" required>
-                </div>
-                <button type="submit" class="btn btn-primary btn-login w-100">Iniciar Sesión</button>
-            </form>
-            <div class="text-center mt-4">
-                <small class="text-muted">Admin: admin / admin123</small>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
