@@ -3,6 +3,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from config import Config
 from models import db, User, Equipo, Prestamo
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -38,7 +39,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user)
-            return redirect(url_for('historial'))  # Redirige a historial directamente
+            return redirect(url_for('historial'))
         flash('Usuario o contraseña incorrectos', 'error')
     return render_template('login.html')
 
@@ -101,7 +102,7 @@ def editar_equipo(equipo_id):
 @login_required
 def eliminar_equipo(equipo_id):
     if current_user.role != 'admin':
-        flash('Acceso denegado', 'error')
+        flash('Acceso denegado')
         return redirect(url_for('historial'))
     
     equipo = Equipo.query.get_or_404(equipo_id)
@@ -157,38 +158,11 @@ def nuevo_alumno():
     
     return render_template('alumnos/nuevo.html')
 
-@app.route('/consulta/nuevo', methods=['GET', 'POST'])
-@login_required
-def nuevo_consulta():
-    if current_user.role != 'admin':
-        flash('Acceso denegado', 'error')
-        return redirect(url_for('historial'))
-    
-    if request.method == 'POST':
-        username = request.form['username']
-        if User.query.filter_by(username=username).first():
-            flash('El nombre de usuario ya existe', 'error')
-            return redirect(url_for('nuevo_consulta'))
-        
-        consulta = User(
-            username=username,
-            nombre=request.form['nombre'],
-            codigo='CONSULTA',  # Opcional, puedes dejarlo vacío o poner algo genérico
-            role='consulta'
-        )
-        consulta.set_password(request.form['password'])
-        db.session.add(consulta)
-        db.session.commit()
-        flash('Usuario de consulta creado correctamente')
-        return redirect(url_for('alumnos'))  # O a una página de éxito
-    
-    return render_template('consulta/nuevo.html')
-
 @app.route('/alumnos/editar/<int:alumno_id>', methods=['GET', 'POST'])
 @login_required
 def editar_alumno(alumno_id):
     if current_user.role != 'admin':
-        flash('Acceso denegado', 'error')
+        flash('Acceso denegado')
         return redirect(url_for('historial'))
     
     alumno = User.query.get_or_404(alumno_id)
@@ -223,7 +197,7 @@ def editar_alumno(alumno_id):
 @login_required
 def eliminar_alumno(alumno_id):
     if current_user.role != 'admin':
-        flash('Acceso denegado', 'error')
+        flash('Acceso denegado')
         return redirect(url_for('historial'))
     
     alumno = User.query.get_or_404(alumno_id)
@@ -337,7 +311,7 @@ def historial():
         prestamos_list = Prestamo.query.filter_by(alumno_id=current_user.id).all()
     return render_template('historial.html', prestamos=prestamos_list, datetime=datetime)
 
+# Corregido para Render.com
 if __name__ == '__main__':
-    import os
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
